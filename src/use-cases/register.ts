@@ -1,6 +1,7 @@
 import { User } from '@prisma/client'
 import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
 import { hash } from 'bcryptjs'
+import { prisma } from '../lib/prisma'
 
 interface IRequest {
   name: string
