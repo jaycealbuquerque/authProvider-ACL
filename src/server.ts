@@ -10,5 +10,3 @@ app.use(express.json())
 app.use(routes)
 
 app.listen(env.PORT, () => console.log('🚀 Server Running!'))
-
-console.log(env)
