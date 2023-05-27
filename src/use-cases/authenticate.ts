@@ -1,6 +1,8 @@
 import { compare } from 'bcryptjs'
+import { sign } from 'jsonwebtoken'
 import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
 import { User } from '@prisma/client'
+import { env } from '../env'
 
 interface AuthenticateUseCaseRequest {
   email: string
@@ -30,6 +32,10 @@ export class AuthenticateUseCase {
       return new Error('Invalid Credentials')
     }
 
-    return { user }
+    const token = sign({}, env.JWT_SECRET, {
+      subject: user.id,
+      expiresIn: '1d',
+    })
+    return { user, token }
   }
 }
