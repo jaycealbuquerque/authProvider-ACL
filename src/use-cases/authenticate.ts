@@ -11,6 +11,7 @@ interface AuthenticateUseCaseRequest {
 
 interface AuthenticateUseCaseResponse {
   user: User
+  token: string
 }
 
 export class AuthenticateUseCase {
@@ -21,6 +22,7 @@ export class AuthenticateUseCase {
     const prismaUsersRepository = new PrismaUsersRepository()
 
     const user = await prismaUsersRepository.findByEmail(email)
+    console.log(user)
 
     if (!user) {
       return new Error('Invalid Credentials')
@@ -36,6 +38,14 @@ export class AuthenticateUseCase {
       subject: user.id,
       expiresIn: '1d',
     })
-    return { user, token }
+
+    const tokenReturn: AuthenticateUseCaseResponse = {
+      token,
+      user: {
+        name: user.name,
+        email: user.email,
+      },
+    }
+    return tokenReturn
   }
 }
