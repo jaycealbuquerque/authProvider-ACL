@@ -1,6 +1,7 @@
 import { User } from '@prisma/client'
 import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
 import { hash } from 'bcryptjs'
+import { AppError } from '../erros/AppError'
 
 interface IRequest {
   name: string
@@ -25,7 +26,7 @@ export class RegisterUseCase {
     const hasEmail = await prismaUsersRepository.findByEmail(email)
 
     if (hasEmail) {
-      return new Error('Email already exists')
+      throw new AppError('Email already exists')
     }
 
     const user = await prismaUsersRepository.create({
@@ -34,6 +35,6 @@ export class RegisterUseCase {
       password_hash: hashedPassword,
     })
 
-    return user
+    return { user }
   }
 }

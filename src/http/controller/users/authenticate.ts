@@ -12,10 +12,6 @@ export class AuthenticateController {
       password,
     })
 
-    // if (result instanceof Error) {
-    //   return response.status(400).json(result.message)
-    // }
-
     return response.json(result)
   }
 }

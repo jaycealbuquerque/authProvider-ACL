@@ -13,10 +13,6 @@ export class RegisterController {
       password,
     })
 
-    if (result instanceof Error) {
-      return response.status(400).json(result.message)
-    }
-
     return response.json(result)
   }
 }

@@ -3,6 +3,7 @@ import { sign } from 'jsonwebtoken'
 import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
 import { User } from '@prisma/client'
 import { env } from '../env'
+import { AppError } from '../erros/AppError'
 
 interface AuthenticateUseCaseRequest {
   email: string
@@ -18,20 +19,20 @@ export class AuthenticateUseCase {
   public async execute({
     email,
     password,
-  }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse | Error> {
+  }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
     const prismaUsersRepository = new PrismaUsersRepository()
 
     const user = await prismaUsersRepository.findByEmail(email)
     console.log(user)
 
     if (!user) {
-      return new Error('Invalid Credentials')
+      throw new AppError('Invalid Credentials')
     }
 
     const doestPasswordMatches = await compare(password, user.password_hash)
 
     if (!doestPasswordMatches) {
-      return new Error('Invalid Credentials')
+      throw new AppError('Invalid Credentials')
     }
 
     const token = sign({}, env.JWT_SECRET, {

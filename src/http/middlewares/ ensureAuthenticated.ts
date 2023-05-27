@@ -1,8 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import { env } from '../../env'
+import { AppError } from '../../erros/AppError'
 
-export async function ensureAutheticated(
+interface IPayloud {
+  sub: string
+}
+
+export async function ensureAuthenticated(
   request: Request,
   response: Response,
   next: NextFunction,
@@ -10,16 +15,16 @@ export async function ensureAutheticated(
   const authHeader = request.headers.authorization
 
   if (!authHeader) {
-    return new Error('Token mising!')
+    throw new AppError('Token mising!', 401)
   }
 
   const [, token] = authHeader.split(' ')
 
   try {
-    const decoded = verify(token, env.JWT_SECRET)
-    console.log(decoded)
+    const { sub } = verify(token, env.JWT_SECRET) as IPayloud
+    // console.log(sub)
     next()
   } catch {
-    return new Error('Invalid token!')
+    throw new AppError('Invalid token!', 401)
   }
 }
