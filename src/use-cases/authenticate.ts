@@ -49,10 +49,6 @@ export class AuthenticateUseCase {
       expiresIn: env.EXPIRES_IN_REFRESH_TOKEN,
     })
 
-    function addDay(days: number): Date {
-      return dayjs().add(days, 'days').toDate()
-    }
-
     const refresh_token_expires_date = dayjs().add(1).toDate()
 
     await prismaUserTokenRepository.create({

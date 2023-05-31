@@ -5,6 +5,8 @@ export class AuthenticateController {
   async handle(request: Request, response: Response) {
     const { email, password } = request.body
 
+    console.log(email, password)
+
     const authenticateUseCase = new AuthenticateUseCase()
 
     const result = await authenticateUseCase.execute({
