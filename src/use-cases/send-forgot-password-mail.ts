@@ -2,8 +2,10 @@ import dayjs from 'dayjs'
 import { AppError } from '../erros/AppError'
 import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
 import { v4 as uuidV4 } from 'uuid'
+import { resolve } from 'path'
 import { PrismaUserTokenRepository } from '../repositories/prisma/prisma-users-token-repository'
 import { EtherealMailProvider } from '../providers/mailProvider/ethereal-mail-provider'
+import { env } from '../env'
 
 export class SendForgotPasswordUseCase {
   public async execute(email: string) {
@@ -12,6 +14,15 @@ export class SendForgotPasswordUseCase {
     const etherealMailProvider = new EtherealMailProvider()
 
     const user = await prismaUsersRepository.findByEmail(email)
+
+    const templatePath = resolve(
+      __dirname,
+      '..',
+      'views',
+      'emails',
+      'forgotPassword.hbs',
+    )
+
     if (!user) {
       throw new AppError('User does not exists!')
     }
@@ -25,10 +36,16 @@ export class SendForgotPasswordUseCase {
       expires_date,
     })
 
+    const variables = {
+      name: user.name,
+      link: `${env.FORGOT_MAIL_URL}${token}`,
+    }
+
     await etherealMailProvider.sendMail(
       email,
       'recuperação de senha',
-      `O link para resetar a senha é ${token}`,
+      variables,
+      templatePath,
     )
 
     return { user }
