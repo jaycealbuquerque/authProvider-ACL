@@ -7,8 +7,8 @@ export class SendForgotPasswordControler {
 
     const sendForgotPassword = new SendForgotPasswordUseCase()
 
-    const mail = await sendForgotPassword.execute(email)
+    await sendForgotPassword.execute(email)
 
-    return response.json(mail)
+    return response.send()
   }
 }
