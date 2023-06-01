@@ -26,7 +26,7 @@ export class RefreshTokenUseCase {
       expiresIn: env.EXPIRES_IN_REFRESH_TOKEN,
     })
 
-    const refresh_token_expires_date = dayjs().add(1).toDate()
+    const refresh_token_expires_date = dayjs().add(1, 'days').toDate()
 
     await prismaUserTokenRepository.create({
       user_id,
@@ -34,9 +34,9 @@ export class RefreshTokenUseCase {
       expires_date: refresh_token_expires_date,
     })
 
-    const newToken = sign({}, env.SECRET_REFRESH_TOKEN, {
+    const newToken = sign({}, env.JWT_SECRET, {
       subject: user_id,
-      expiresIn: env.EXPIRES_IN_REFRESH_TOKEN,
+      expiresIn: env.EXPIRES_IN_TOKEN,
     })
 
     return {
