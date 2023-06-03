@@ -1,15 +1,16 @@
 import express, { NextFunction, Request, Response } from 'express'
 import 'express-async-errors'
-import { routes } from './http/controller/users/routes'
-
-import { env } from './env'
+import { usersRoutes } from './http/controller/users/routes'
+import { accessControlRoutes } from './http/controller/access-control-lists/routes'
 import { AppError } from './erros/AppError'
+import { env } from './env'
 
 const app = express()
 
 app.use(express.json())
 
-app.use(routes)
+app.use(usersRoutes)
+app.use(accessControlRoutes)
 
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {

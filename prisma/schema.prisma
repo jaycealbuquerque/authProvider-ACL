@@ -32,3 +32,34 @@ model UsersToken {
 
   @@map("users_token")
 }
+
+model Roles {
+  id                 String               @id @default(uuid())
+  name               String               @unique
+  description        String
+  created_at         DateTime             @default(now())
+  PermissionsOnRoles PermissionsOnRoles[]
+
+  @@map("roles")
+}
+
+model Permissions {
+  id                 String               @id @default(uuid())
+  name               String
+  description        String
+  created_at         DateTime             @default(now())
+  PermissionsOnRoles PermissionsOnRoles[]
+
+  @@map("permissions")
+}
+
+model PermissionsOnRoles {
+  permissions   Permissions @relation(fields: [permissionsId], references: [id])
+  permissionsId String
+  roles         Roles       @relation(fields: [rolesId], references: [id])
+  rolesId       String
+  created_at    DateTime    @default(now())
+
+  @@id([permissionsId, rolesId])
+  @@map("permissions_on_roles")
+}

@@ -7,13 +7,17 @@ import { RefreshTokenController } from './refresh-token'
 import { SendForgotPasswordControler } from './forgot-password'
 import { ResetPasswordUserController } from './reset-password'
 
-const routes = Router()
+const usersRoutes = Router()
 
-routes.post('/register', new RegisterController().handle)
-routes.post('/authenticate', new AuthenticateController().handle)
-routes.post('/refresh-token', new RefreshTokenController().handle)
-routes.post('/send-forgot-password', new SendForgotPasswordControler().handle)
-routes.post('/reset-password', new ResetPasswordUserController().handle)
-routes.post('/me', ensureAuthenticated, new ProfileController().handle)
+usersRoutes.post('/register', new RegisterController().handle)
+usersRoutes.post('/authenticate', new AuthenticateController().handle)
+usersRoutes.post('/refresh-token', new RefreshTokenController().handle)
+usersRoutes.post(
+  '/send-forgot-password',
+  new SendForgotPasswordControler().handle,
+)
+usersRoutes.post('/reset-password', new ResetPasswordUserController().handle)
 
-export { routes }
+usersRoutes.post('/me', ensureAuthenticated, new ProfileController().handle)
+
+export { usersRoutes }
