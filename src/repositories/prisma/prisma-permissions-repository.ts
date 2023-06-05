@@ -11,10 +11,20 @@ export class PrismaPermissionsRepository implements IPermissionRepository {
     return roles
   }
 
-  async findOne(name: string) {
+  async findByName(name: string) {
     const roles = await prisma.roles.findUnique({
       where: {
         name,
+      },
+    })
+
+    return roles
+  }
+
+  async findById(id: string) {
+    const roles = await prisma.roles.findUnique({
+      where: {
+        id,
       },
     })
 

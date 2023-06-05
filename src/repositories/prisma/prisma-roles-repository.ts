@@ -11,10 +11,20 @@ export class PrismaRolesRepository implements IRolesRepository {
     return roles
   }
 
-  async findOne(name: string): Promise<Roles | null> {
+  async findByName(name: string): Promise<Roles | null> {
     const roles = await prisma.roles.findUnique({
       where: {
         name,
+      },
+    })
+
+    return roles
+  }
+
+  async findById(id: string): Promise<Roles | null> {
+    const roles = await prisma.roles.findUnique({
+      where: {
+        id,
       },
     })
 
