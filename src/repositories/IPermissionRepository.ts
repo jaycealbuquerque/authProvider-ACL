@@ -1,7 +1,7 @@
-import { Prisma, Roles } from '@prisma/client'
+import { Permissions, Prisma } from '@prisma/client'
 
 export interface IPermissionRepository {
-  create(data: Prisma.PermissionsCreateInput): Promise<Roles>
-  findByName(name: string): Promise<Roles | null>
-  findById(id: string): Promise<Roles | null>
+  create(data: Prisma.PermissionsCreateInput): Promise<Permissions>
+  findByName(name: string): Promise<Permissions | null>
+  findByIds(id: string[]): Promise<Permissions[] | null>
 }

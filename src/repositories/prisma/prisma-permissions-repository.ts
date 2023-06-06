@@ -4,30 +4,32 @@ import { IPermissionRepository } from '../IPermissionRepository'
 
 export class PrismaPermissionsRepository implements IPermissionRepository {
   async create(data: Prisma.PermissionsCreateInput): Promise<Permissions> {
-    const roles = await prisma.permissions.create({
+    const permissions = await prisma.permissions.create({
       data,
     })
 
-    return roles
+    return permissions
   }
 
   async findByName(name: string) {
-    const roles = await prisma.roles.findUnique({
+    const permissions = await prisma.permissions.findUnique({
       where: {
         name,
       },
     })
 
-    return roles
+    return permissions
   }
 
-  async findById(id: string) {
-    const roles = await prisma.roles.findUnique({
+  async findByIds(id: string[]) {
+    const name = await prisma.permissions.findMany({
       where: {
-        id,
+        id: {
+          in: id,
+        },
       },
     })
 
-    return roles
+    return name
   }
 }
