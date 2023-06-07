@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id            String       @id @default(uuid())
+  id            String         @id @default(uuid())
   name          String
-  email         String       @unique
+  email         String         @unique
   password_hash String
-  created_at    DateTime     @default(now())
+  created_at    DateTime       @default(now())
   usersToken    UsersToken[]
+  UsersOnRoles  UsersOnRoles[]
 
   @@map("users")
 }
@@ -33,12 +34,23 @@ model UsersToken {
   @@map("users_token")
 }
 
+model UsersOnRoles {
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  roles   Roles  @relation(fields: [rolesId], references: [id])
+  rolesId String
+
+  @@id([userId, rolesId])
+  @@map("users_roles")
+}
+
 model Roles {
   id                 String               @id @default(uuid())
   name               String               @unique
   description        String
   created_at         DateTime             @default(now())
   PermissionsOnRoles PermissionsOnRoles[]
+  UsersOnRoles       UsersOnRoles[]
 
   @@map("roles")
 }
