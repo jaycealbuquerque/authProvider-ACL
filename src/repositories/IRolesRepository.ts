@@ -4,4 +4,5 @@ export interface IRolesRepository {
   create(data: Prisma.RolesCreateInput): Promise<Roles>
   findByName(name: string): Promise<Roles | null>
   findById(id: string): Promise<Roles | null>
+  permissionsOnRoles(roleId: string, permissions: string[]): Promise<Roles>
 }

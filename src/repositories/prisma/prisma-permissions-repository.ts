@@ -22,7 +22,7 @@ export class PrismaPermissionsRepository implements IPermissionRepository {
   }
 
   async findByIds(id: string[]) {
-    const name = await prisma.permissions.findMany({
+    const permissions = await prisma.permissions.findMany({
       where: {
         id: {
           in: id,
@@ -30,6 +30,6 @@ export class PrismaPermissionsRepository implements IPermissionRepository {
       },
     })
 
-    return name
+    return permissions
   }
 }

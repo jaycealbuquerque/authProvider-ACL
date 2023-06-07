@@ -1,7 +1,6 @@
 import { PrismaRolesRepository } from '../repositories/prisma/prisma-roles-repository'
 import { PrismaPermissionsRepository } from '../repositories/prisma/prisma-permissions-repository'
 import { AppError } from '../erros/AppError'
-import { prisma } from '../lib/prisma'
 
 interface RolePermissionRequest {
   roleId: string
@@ -19,29 +18,17 @@ export class CreateRolePermissionUseCase {
       throw new AppError('Role does not exists!')
     }
 
-    const permi = await prismaPermissionsRepository.findByIds(permissions)
+    const permission = await prismaPermissionsRepository.findByIds(permissions)
 
-    // const permissionsOnRoles = await prisma.permissionsOnRoles.createMany({
-    //   data: permissions.map((permi) => ({
-    //     rolesId: roleId,
-    //     permissionsId: permi,
-    //   })),
-    // })
+    if (!(permission.length === permissions.length)) {
+      throw new AppError('Permission does not exists!')
+    }
 
-    // await prisma.roles.update({
-    //   where: {
-    //     id: roleId,
-    //   },
-    //   data: {
-    //     PermissionsOnRoles: {
-    //       createMany: {
-    //         data: permissions.map((permi) => ({
-    //           permissionsId: permi,
-    //         })),
-    //       },
-    //     },
-    //   },
-    // })
-    // return permissionsOnRoles
+    const permissionsOnRoles = await prismaRolesRepository.permissionsOnRoles(
+      roleId,
+      permissions,
+    )
+
+    return permissionsOnRoles
   }
 }

@@ -30,4 +30,25 @@ export class PrismaRolesRepository implements IRolesRepository {
 
     return roles
   }
+
+  async permissionsOnRoles(
+    roleId: string,
+    permissions: string[],
+  ): Promise<Roles> {
+    const rolesPermission = await prisma.roles.update({
+      where: {
+        id: roleId,
+      },
+      data: {
+        PermissionsOnRoles: {
+          createMany: {
+            data: permissions.map((permission) => ({
+              permissionsId: permission,
+            })),
+          },
+        },
+      },
+    })
+    return rolesPermission
+  }
 }
