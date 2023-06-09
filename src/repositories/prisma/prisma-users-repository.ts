@@ -43,4 +43,18 @@ export class PrismaUsersRepository implements IUsersRepository {
 
     return user
   }
+
+  async userACL(userId: string, roleId: string) {
+    const user = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        UsersOnRoles: {
+          create: { rolesId: roleId },
+        },
+      },
+    })
+    return user
+  }
 }
