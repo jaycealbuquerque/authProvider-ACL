@@ -1,4 +1,4 @@
-import { User, Prisma } from '@prisma/client'
+import { User, Prisma, UsersOnRoles } from '@prisma/client'
 import { IUsersRepository } from '../IUsersRepository'
 import { prisma } from '../../lib/prisma'
 
@@ -52,6 +52,16 @@ export class PrismaUsersRepository implements IUsersRepository {
       data: {
         UsersOnRoles: {
           create: { rolesId: roleId },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        UsersOnRoles: {
+          select: {
+            roles: true,
+          },
         },
       },
     })

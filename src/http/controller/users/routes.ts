@@ -6,6 +6,7 @@ import { ensureAuthenticated } from '../../middlewares/ ensureAuthenticated'
 import { RefreshTokenController } from './refresh-token'
 import { SendForgotPasswordControler } from './forgot-password'
 import { ResetPasswordUserController } from './reset-password'
+import { is } from '../../middlewares/permissions'
 
 const usersRoutes = Router()
 
@@ -18,6 +19,11 @@ usersRoutes.post(
 )
 usersRoutes.post('/reset-password', new ResetPasswordUserController().handle)
 
-usersRoutes.post('/me', ensureAuthenticated, new ProfileController().handle)
+usersRoutes.post(
+  '/me',
+  ensureAuthenticated,
+  is('admin'),
+  new ProfileController().handle,
+)
 
 export { usersRoutes }
