@@ -40,3 +40,37 @@ export function is(rolesRoutes: string) {
     return next()
   }
 }
+
+export function can(permissionsRoutes: string[]) {
+  return async (request: Request, response: Response, next: NextFunction) => {
+    const authHeader = request.headers.authorization
+
+    const [, token] = authHeader.split(' ')
+
+    const { sub } = verify(token, env.JWT_SECRET) as IPayloud
+
+    const user = await prisma.user.findUnique({
+      where: { id: sub },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        UsersOnPermissions: {
+          select: {
+            permission: true,
+          },
+        },
+      },
+    })
+
+    const permissionExists = user?.UsersOnPermissions.map(
+      (permission) => permission.permissions.name,
+    ).some((permission) => permissionsRoutes.includes(permission))
+
+    if (!permissionExists) {
+      return response.status(403).end('User does not  permission')
+    }
+
+    return next()
+  }
+}
