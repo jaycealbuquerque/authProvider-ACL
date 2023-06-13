@@ -44,7 +44,7 @@ export class PrismaUsersRepository implements IUsersRepository {
     return user
   }
 
-  async userACL(userId: string, roleId: string) {
+  async userACL(userId: string, roleId: string, permissionId: string[]) {
     const user = await prisma.user.update({
       where: {
         id: userId,
@@ -52,6 +52,13 @@ export class PrismaUsersRepository implements IUsersRepository {
       data: {
         UsersOnRoles: {
           create: { rolesId: roleId },
+        },
+        UsersOnPermissions: {
+          createMany: {
+            data: permissionId.map((permission) => ({
+              permissionsId: permission,
+            })),
+          },
         },
       },
       select: {
@@ -61,6 +68,11 @@ export class PrismaUsersRepository implements IUsersRepository {
         UsersOnRoles: {
           select: {
             roles: true,
+          },
+        },
+        UsersOnPermissions: {
+          select: {
+            permissions: true,
           },
         },
       },

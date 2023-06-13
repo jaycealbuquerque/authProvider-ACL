@@ -41,7 +41,7 @@ export function is(rolesRoutes: string) {
   }
 }
 
-export function can(permissionsRoutes: string[]) {
+export function can(permissionsRoutes: string) {
   return async (request: Request, response: Response, next: NextFunction) => {
     const authHeader = request.headers.authorization
 
@@ -57,7 +57,7 @@ export function can(permissionsRoutes: string[]) {
         email: true,
         UsersOnPermissions: {
           select: {
-            permission: true,
+            permissions: true,
           },
         },
       },
