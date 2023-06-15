@@ -1,12 +1,11 @@
 import { compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
 import { User } from '@prisma/client'
 import { env } from '../env'
 import { AppError } from '../erros/AppError'
-import { PrismaUserTokenRepository } from '../repositories/prisma/prisma-users-token-repository'
 import dayjs from 'dayjs'
-import { number } from 'zod'
+import { IUsersRepository } from '../repositories/IUsersRepository'
+import { IUsersTokenRepository } from '../repositories/IUsersTokenRepository'
 
 interface AuthenticateUseCaseRequest {
   email: string
@@ -20,14 +19,25 @@ interface AuthenticateUseCaseResponse {
 }
 
 export class AuthenticateUseCase {
+  private UsersRepository: IUsersRepository
+  private UsersTokenRepository: IUsersTokenRepository
+
+  constructor(
+    UsersRepository: IUsersRepository,
+    UsersTokenRepository: IUsersTokenRepository,
+  ) {
+    this.UsersRepository = UsersRepository
+    this.UsersTokenRepository = UsersTokenRepository
+  }
+
   public async execute({
     email,
     password,
   }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
-    const prismaUsersRepository = new PrismaUsersRepository()
-    const prismaUserTokenRepository = new PrismaUserTokenRepository()
+    // const prismaUsersRepository = new PrismaUsersRepository()
+    // const prismaUserTokenRepository = new PrismaUserTokenRepository()
 
-    const user = await prismaUsersRepository.findByEmail(email)
+    const user = await this.UsersRepository.findByEmail(email)
 
     if (!user) {
       throw new AppError('Invalid Credentials')
@@ -51,7 +61,7 @@ export class AuthenticateUseCase {
 
     const refresh_token_expires_date = dayjs().add(1, 'days').toDate()
 
-    await prismaUserTokenRepository.create({
+    await this.UsersTokenRepository.create({
       user_id: user.id,
       refresh_token,
       expires_date: refresh_token_expires_date,

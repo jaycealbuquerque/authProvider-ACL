@@ -1,19 +1,25 @@
 import dayjs from 'dayjs'
 import { AppError } from '../erros/AppError'
-import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
 import { v4 as uuidV4 } from 'uuid'
 import { resolve } from 'path'
-import { PrismaUserTokenRepository } from '../repositories/prisma/prisma-users-token-repository'
-import { EtherealMailProvider } from '../providers/mailProvider/ethereal-mail-provider'
 import { env } from '../env'
+import { IUsersRepository } from '../repositories/IUsersRepository'
+import { IUsersTokenRepository } from '../repositories/IUsersTokenRepository'
+import { IMailProvider } from '../providers/mailProvider/IMailProvider'
 
 export class SendForgotPasswordUseCase {
-  public async execute(email: string) {
-    const prismaUsersRepository = new PrismaUsersRepository()
-    const prismaUserTokenRepository = new PrismaUserTokenRepository()
-    const etherealMailProvider = new EtherealMailProvider()
+  constructor(
+    private UsersRepository: IUsersRepository,
+    private UsersTokenRepository: IUsersTokenRepository,
+    private MailProvider: IMailProvider,
+  ) {}
 
-    const user = await prismaUsersRepository.findByEmail(email)
+  public async execute(email: string) {
+    // const prismaUsersRepository = new PrismaUsersRepository()
+    // const prismaUserTokenRepository = new PrismaUserTokenRepository()
+    // const etherealMailProvider = new EtherealMailProvider()
+
+    const user = await this.UsersRepository.findByEmail(email)
 
     const templatePath = resolve(
       __dirname,
@@ -30,7 +36,7 @@ export class SendForgotPasswordUseCase {
 
     const expires_date = dayjs().add(1, 'hour').toDate()
 
-    await prismaUserTokenRepository.create({
+    await this.UsersTokenRepository.create({
       refresh_token: token,
       user_id: user.id,
       expires_date,
@@ -41,7 +47,7 @@ export class SendForgotPasswordUseCase {
       link: `${env.FORGOT_MAIL_URL}${token}`,
     }
 
-    await etherealMailProvider.sendMail(
+    await this.MailProvider.sendMail(
       email,
       'recuperação de senha',
       variables,

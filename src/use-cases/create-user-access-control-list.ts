@@ -1,5 +1,5 @@
 import { AppError } from '../erros/AppError'
-import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
+import { IUsersRepository } from '../repositories/IUsersRepository'
 
 interface UserACLRequest {
   userId: string
@@ -8,16 +8,18 @@ interface UserACLRequest {
 }
 
 export class CreateUserAccessControllistUseCase {
-  async execute({ userId, roleId, permissionId }: UserACLRequest) {
-    const prismaUsersRepository = new PrismaUsersRepository()
+  constructor(private UsersRepository: IUsersRepository) {}
 
-    const user = await prismaUsersRepository.findById(userId)
+  async execute({ userId, roleId, permissionId }: UserACLRequest) {
+    // const prismaUsersRepository = new PrismaUsersRepository()
+
+    const user = await this.UsersRepository.findById(userId)
 
     if (!user) {
       throw new AppError('User does not exists!')
     }
     console.log(userId, roleId, permissionId)
-    const userACL = await prismaUsersRepository.userACL(
+    const userACL = await this.UsersRepository.userACL(
       userId,
       roleId,
       permissionId,

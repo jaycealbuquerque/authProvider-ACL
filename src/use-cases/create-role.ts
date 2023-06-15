@@ -1,6 +1,6 @@
 import { Roles } from '@prisma/client'
-import { PrismaRolesRepository } from '../repositories/prisma/prisma-roles-repository'
 import { AppError } from '../erros/AppError'
+import { IRolesRepository } from '../repositories/IRolesRepository'
 
 interface RoleRequest {
   name: string
@@ -8,14 +8,16 @@ interface RoleRequest {
 }
 
 export class CreateRoleUseCase {
-  async execute({ name, description }: RoleRequest): Promise<Roles> {
-    const prismaRolesRepository = new PrismaRolesRepository()
+  constructor(private RolesRepository: IRolesRepository) {}
 
-    if (await prismaRolesRepository.findByName(name)) {
+  async execute({ name, description }: RoleRequest): Promise<Roles> {
+    // const prismaRolesRepository = new PrismaRolesRepository()
+
+    if (await this.RolesRepository.findByName(name)) {
       throw new AppError('Role already exists')
     }
 
-    const role = await prismaRolesRepository.create({
+    const role = await this.RolesRepository.create({
       name,
       description,
     })

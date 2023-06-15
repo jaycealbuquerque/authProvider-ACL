@@ -1,6 +1,6 @@
 import { User } from '@prisma/client'
-import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
 import { AppError } from '../erros/AppError'
+import { IUsersRepository } from '../repositories/IUsersRepository'
 
 interface GetUserProfileUseCaseRequest {
   userId: string
@@ -10,12 +10,14 @@ interface GetUserProfileUseCaseResponse {
   user: User
 }
 export class GetUserProfileUseCase {
+  constructor(private UsersRepository: IUsersRepository) {}
+
   async execute({
     userId,
   }: GetUserProfileUseCaseRequest): Promise<GetUserProfileUseCaseResponse> {
-    const prismaUsersRepository = new PrismaUsersRepository()
+    // const prismaUsersRepository = new PrismaUsersRepository()
 
-    const user = await prismaUsersRepository.findById(userId)
+    const user = await this.UsersRepository.findById(userId)
 
     if (!user) {
       throw new AppError('User not found.')

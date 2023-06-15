@@ -1,17 +1,19 @@
 import { sign, verify } from 'jsonwebtoken'
 import { env } from '../env'
-import { PrismaUserTokenRepository } from '../repositories/prisma/prisma-users-token-repository'
 import { AppError } from '../erros/AppError'
 import dayjs from 'dayjs'
+import { IUsersTokenRepository } from '../repositories/IUsersTokenRepository'
 
 export class RefreshTokenUseCase {
+  constructor(private UsersTokenRepository: IUsersTokenRepository) {}
+
   async execute(token: string) {
     const { email, sub } = verify(token, env.SECRET_REFRESH_TOKEN)
 
-    const prismaUserTokenRepository = new PrismaUserTokenRepository()
+    // const prismaUserTokenRepository = new PrismaUserTokenRepository()
     const user_id = sub
     const userToken =
-      await prismaUserTokenRepository.findByUserIdAndRefreshToken(
+      await this.UsersTokenRepository.findByUserIdAndRefreshToken(
         user_id,
         token,
       )
@@ -19,7 +21,7 @@ export class RefreshTokenUseCase {
       throw new AppError('Refresh Token does not exists!')
     }
 
-    await prismaUserTokenRepository.deleteById(userToken.id)
+    await this.UsersTokenRepository.deleteById(userToken.id)
 
     const refresh_token = sign({ email }, env.SECRET_REFRESH_TOKEN, {
       subject: user_id,
@@ -28,7 +30,7 @@ export class RefreshTokenUseCase {
 
     const refresh_token_expires_date = dayjs().add(1, 'days').toDate()
 
-    await prismaUserTokenRepository.create({
+    await this.UsersTokenRepository.create({
       user_id,
       refresh_token,
       expires_date: refresh_token_expires_date,

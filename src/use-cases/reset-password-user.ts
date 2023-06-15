@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
 import { AppError } from '../erros/AppError'
-import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
-import { PrismaUserTokenRepository } from '../repositories/prisma/prisma-users-token-repository'
 import { hash } from 'bcryptjs'
 import { User } from '@prisma/client'
+import { IUsersTokenRepository } from '../repositories/IUsersTokenRepository'
+import { IUsersRepository } from '../repositories/IUsersRepository'
 
 interface IRequest {
   token: string
@@ -11,11 +11,16 @@ interface IRequest {
 }
 
 export class ResetPasswordUserUseCase {
+  constructor(
+    private UsersTokenRepository: IUsersTokenRepository,
+    private UsersRepository: IUsersRepository,
+  ) {}
+
   async execute({ token, password }: IRequest): Promise<void> {
-    const prismaUsersRepository = new PrismaUsersRepository()
-    const prismaUserTokenRepository = new PrismaUserTokenRepository()
+    // const prismaUsersRepository = new PrismaUsersRepository()
+    // const prismaUserTokenRepository = new PrismaUserTokenRepository()
     console.log(token, password)
-    const userToken = await prismaUserTokenRepository.findByRefreshToken(token)
+    const userToken = await this.UsersTokenRepository.findByRefreshToken(token)
 
     if (!userToken) {
       throw new AppError('Token invalid!')
@@ -25,14 +30,14 @@ export class ResetPasswordUserUseCase {
       throw new AppError('Token expired!')
     }
 
-    const user = (await prismaUsersRepository.findById(
+    const user = (await this.UsersRepository.findById(
       userToken.user_id,
     )) as User
 
     const password_hash = await hash(password, 8)
 
-    await prismaUsersRepository.updatePassword(user.id, password_hash)
+    await this.UsersRepository.updatePassword(user.id, password_hash)
 
-    await prismaUserTokenRepository.deleteById(userToken.id)
+    await this.UsersTokenRepository.deleteById(userToken.id)
   }
 }
