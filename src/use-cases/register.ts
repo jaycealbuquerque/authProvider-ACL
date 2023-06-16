@@ -17,8 +17,6 @@ export class RegisterUseCase {
   constructor(private UsersRepository: IUsersRepository) {}
 
   async execute({ name, email, password }: IRequest): Promise<IResponse> {
-    // const prismaUsersRepository = new PrismaUsersRepository()
-
     const hashedPassword = await hash(password, 8)
 
     const hasEmail = await this.UsersRepository.findByEmail(email)

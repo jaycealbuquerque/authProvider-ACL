@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import { CreatePermissionUseCase } from '../../../use-cases/create-permission'
+import { makeCreatePermissionUseCase } from '../../../use-cases/factories/make-create-permission'
 
 export class CreatePermissionController {
   async handle(request: Request, response: Response) {
     const { name, description } = request.body
 
-    const createPermissionUseCase = new CreatePermissionUseCase()
+    const createPermissionUseCase = makeCreatePermissionUseCase()
 
     const permission = await createPermissionUseCase.execute({
       name,

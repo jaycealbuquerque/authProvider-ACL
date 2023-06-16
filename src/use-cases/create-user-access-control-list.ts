@@ -11,8 +11,6 @@ export class CreateUserAccessControllistUseCase {
   constructor(private UsersRepository: IUsersRepository) {}
 
   async execute({ userId, roleId, permissionId }: UserACLRequest) {
-    // const prismaUsersRepository = new PrismaUsersRepository()
-
     const user = await this.UsersRepository.findById(userId)
 
     if (!user) {

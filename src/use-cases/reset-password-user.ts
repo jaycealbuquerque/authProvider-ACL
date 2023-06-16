@@ -17,9 +17,6 @@ export class ResetPasswordUserUseCase {
   ) {}
 
   async execute({ token, password }: IRequest): Promise<void> {
-    // const prismaUsersRepository = new PrismaUsersRepository()
-    // const prismaUserTokenRepository = new PrismaUserTokenRepository()
-    console.log(token, password)
     const userToken = await this.UsersTokenRepository.findByRefreshToken(token)
 
     if (!userToken) {

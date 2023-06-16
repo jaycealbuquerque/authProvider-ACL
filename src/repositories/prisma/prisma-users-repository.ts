@@ -1,4 +1,4 @@
-import { User, Prisma, UsersOnRoles } from '@prisma/client'
+import { User, Prisma } from '@prisma/client'
 import { IUsersRepository } from '../IUsersRepository'
 import { prisma } from '../../lib/prisma'
 

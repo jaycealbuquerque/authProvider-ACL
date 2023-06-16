@@ -11,8 +11,6 @@ export class CreateRoleUseCase {
   constructor(private RolesRepository: IRolesRepository) {}
 
   async execute({ name, description }: RoleRequest): Promise<Roles> {
-    // const prismaRolesRepository = new PrismaRolesRepository()
-
     if (await this.RolesRepository.findByName(name)) {
       throw new AppError('Role already exists')
     }

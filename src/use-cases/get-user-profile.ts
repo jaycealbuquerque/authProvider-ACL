@@ -15,8 +15,6 @@ export class GetUserProfileUseCase {
   async execute({
     userId,
   }: GetUserProfileUseCaseRequest): Promise<GetUserProfileUseCaseResponse> {
-    // const prismaUsersRepository = new PrismaUsersRepository()
-
     const user = await this.UsersRepository.findById(userId)
 
     if (!user) {

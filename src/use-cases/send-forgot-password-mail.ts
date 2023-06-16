@@ -14,11 +14,7 @@ export class SendForgotPasswordUseCase {
     private MailProvider: IMailProvider,
   ) {}
 
-  public async execute(email: string) {
-    // const prismaUsersRepository = new PrismaUsersRepository()
-    // const prismaUserTokenRepository = new PrismaUserTokenRepository()
-    // const etherealMailProvider = new EtherealMailProvider()
-
+  async execute(email: string) {
     const user = await this.UsersRepository.findByEmail(email)
 
     const templatePath = resolve(

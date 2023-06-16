@@ -14,8 +14,6 @@ export class CreatePermissionUseCase {
     name,
     description,
   }: PermisisonRequest): Promise<Permissions> {
-    // const prismaPermissionsRepository = new PrismaPermissionsRepository()
-
     if (await this.PermissionRepository.findByName(name)) {
       throw new AppError('Permission already exists')
     }

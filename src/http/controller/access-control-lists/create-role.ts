@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import { CreateRoleUseCase } from '../../../use-cases/create-role'
+import { makeCreateRoleUseCase } from '../../../use-cases/factories/make-create-role'
 
 export class CreateRoleController {
   async handle(request: Request, response: Response) {
     const { name, description } = request.body
 
-    const createRoleUseCase = new CreateRoleUseCase()
+    const createRoleUseCase = makeCreateRoleUseCase()
     const role = await createRoleUseCase.execute({ name, description })
 
     return response.json(role)

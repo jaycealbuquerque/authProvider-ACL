@@ -1,13 +1,11 @@
 import { Request, Response } from 'express'
-import { RegisterUseCase } from '../../../use-cases/register'
-import { PrismaUsersRepository } from '../../../repositories/prisma/prisma-users-repository'
+import { makeRegisterUseCase } from '../../../use-cases/factories/make-register'
 
 export class RegisterController {
   async handle(request: Request, response: Response) {
     const { name, email, password } = request.body
 
-    const prismaUsersRepository = new PrismaUsersRepository()
-    const registerUseCase = new RegisterUseCase(prismaUsersRepository)
+    const registerUseCase = makeRegisterUseCase()
 
     const result = await registerUseCase.execute({
       name,

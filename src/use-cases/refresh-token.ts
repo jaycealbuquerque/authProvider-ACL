@@ -10,7 +10,6 @@ export class RefreshTokenUseCase {
   async execute(token: string) {
     const { email, sub } = verify(token, env.SECRET_REFRESH_TOKEN)
 
-    // const prismaUserTokenRepository = new PrismaUserTokenRepository()
     const user_id = sub
     const userToken =
       await this.UsersTokenRepository.findByUserIdAndRefreshToken(

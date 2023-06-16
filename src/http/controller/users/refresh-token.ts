@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { RefreshTokenUseCase } from '../../../use-cases/refresh-token'
+import { makeRefreshTokenUseCase } from '../../../use-cases/factories/make-refresh-token'
 
 export class RefreshTokenController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -8,7 +8,7 @@ export class RefreshTokenController {
       request.headers['x-access-token'] ||
       request.query.token
 
-    const refreshTokenUseCase = new RefreshTokenUseCase()
+    const refreshTokenUseCase = makeRefreshTokenUseCase()
 
     const refresh_token = await refreshTokenUseCase.execute(token)
 

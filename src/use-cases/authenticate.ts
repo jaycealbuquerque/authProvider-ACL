@@ -19,18 +19,12 @@ interface AuthenticateUseCaseResponse {
 }
 
 export class AuthenticateUseCase {
-  private UsersRepository: IUsersRepository
-  private UsersTokenRepository: IUsersTokenRepository
-
   constructor(
-    UsersRepository: IUsersRepository,
-    UsersTokenRepository: IUsersTokenRepository,
-  ) {
-    this.UsersRepository = UsersRepository
-    this.UsersTokenRepository = UsersTokenRepository
-  }
+    private UsersRepository: IUsersRepository,
+    private UsersTokenRepository: IUsersTokenRepository,
+  ) {}
 
-  public async execute({
+  async execute({
     email,
     password,
   }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
