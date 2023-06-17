@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "prisma generate && dotenv -e .env -- yarn migrate:init && dotenv -e .env tsx watch src/server.ts",
     "start": "node build/server.js",
     "build": "tsup src --out-dir build",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "migrate:init": "npx prisma migrate dev --name init"
   },
   "keywords": [],
   "author": "",
