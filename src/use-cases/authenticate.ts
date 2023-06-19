@@ -28,9 +28,6 @@ export class AuthenticateUseCase {
     email,
     password,
   }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
-    // const prismaUsersRepository = new PrismaUsersRepository()
-    // const prismaUserTokenRepository = new PrismaUserTokenRepository()
-
     const user = await this.UsersRepository.findByEmail(email)
 
     if (!user) {

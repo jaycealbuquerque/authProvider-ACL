@@ -61,21 +61,21 @@ export class PrismaUsersRepository implements IUsersRepository {
           },
         },
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        UsersOnRoles: {
-          select: {
-            roles: true,
-          },
-        },
-        UsersOnPermissions: {
-          select: {
-            permissions: true,
-          },
-        },
-      },
+      // select: {
+      //   id: true,
+      //   name: true,
+      //   email: true,
+      //   UsersOnRoles: {
+      //     select: {
+      //       roles: true,
+      //     },
+      //   },
+      //   UsersOnPermissions: {
+      //     select: {
+      //       permissions: true,
+      //     },
+      //   },
+      // },
     })
     return user
   }
