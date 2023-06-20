@@ -1,5 +1,5 @@
 import { PrismaUserTokenRepository } from '../../repositories/prisma/prisma-users-token-repository'
-import { RefreshTokenUseCase } from '../refresh-token'
+import { RefreshTokenUseCase } from '../users/refresh-token'
 
 export function makeRefreshTokenUseCase() {
   const prismaUserTokenRepository = new PrismaUserTokenRepository()

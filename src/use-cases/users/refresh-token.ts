@@ -1,8 +1,8 @@
 import { sign, verify } from 'jsonwebtoken'
-import { env } from '../env'
-import { AppError } from '../erros/AppError'
+import { env } from '../../env'
+import { AppError } from '../../erros/AppError'
 import dayjs from 'dayjs'
-import { IUsersTokenRepository } from '../repositories/IUsersTokenRepository'
+import { IUsersTokenRepository } from '../../repositories/IUsersTokenRepository'
 
 export class RefreshTokenUseCase {
   constructor(private UsersTokenRepository: IUsersTokenRepository) {}

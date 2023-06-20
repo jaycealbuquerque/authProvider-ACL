@@ -1,7 +1,7 @@
 import { User } from '@prisma/client'
 import { hash } from 'bcryptjs'
-import { AppError } from '../erros/AppError'
-import { IUsersRepository } from '../repositories/IUsersRepository'
+import { AppError } from '../../erros/AppError'
+import { IUsersRepository } from '../../repositories/IUsersRepository'
 
 interface IRequest {
   name: string

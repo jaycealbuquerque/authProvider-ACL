@@ -1,5 +1,5 @@
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
-import { CreateUserAccessControllistUseCase } from '../create-user-access-control-list'
+import { CreateUserAccessControllistUseCase } from '../access-control-lists/create-user-access-control-list'
 
 export function makeCreateUserAccessControllistUseCase() {
   const prismaUsersRepository = new PrismaUsersRepository()

@@ -1,5 +1,5 @@
 import { PrismaPermissionsRepository } from '../../repositories/prisma/prisma-permissions-repository'
-import { CreatePermissionUseCase } from '../create-permission'
+import { CreatePermissionUseCase } from '../access-control-lists/create-permission'
 
 export function makeCreatePermissionUseCase() {
   const prismaPermissionsRepository = new PrismaPermissionsRepository()

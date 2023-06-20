@@ -1,6 +1,6 @@
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { PrismaUserTokenRepository } from '../../repositories/prisma/prisma-users-token-repository'
-import { ResetPasswordUserUseCase } from '../reset-password-user'
+import { ResetPasswordUserUseCase } from '../users/reset-password-user'
 
 export function makeResetPasswordUserUseCase() {
   const prismaUsersRepository = new PrismaUsersRepository()

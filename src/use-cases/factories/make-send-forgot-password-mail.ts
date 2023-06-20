@@ -1,7 +1,7 @@
 import { EtherealMailProvider } from '../../providers/mailProvider/ethereal-mail-provider'
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { PrismaUserTokenRepository } from '../../repositories/prisma/prisma-users-token-repository'
-import { SendForgotPasswordUseCase } from '../send-forgot-password-mail'
+import { SendForgotPasswordUseCase } from '../users/send-forgot-password-mail'
 
 export function makeSendForgotPasswordUseCase() {
   const prismaUsersRepository = new PrismaUsersRepository()

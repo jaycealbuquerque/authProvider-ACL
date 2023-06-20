@@ -1,5 +1,5 @@
-import { AppError } from '../erros/AppError'
-import { IUsersRepository } from '../repositories/IUsersRepository'
+import { AppError } from '../../erros/AppError'
+import { IUsersRepository } from '../../repositories/IUsersRepository'
 
 interface UserACLRequest {
   userId: string

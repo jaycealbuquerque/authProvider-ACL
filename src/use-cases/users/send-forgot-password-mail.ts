@@ -1,11 +1,11 @@
 import dayjs from 'dayjs'
-import { AppError } from '../erros/AppError'
+import { AppError } from '../../erros/AppError'
 import { v4 as uuidV4 } from 'uuid'
 import { resolve } from 'path'
-import { env } from '../env'
-import { IUsersRepository } from '../repositories/IUsersRepository'
-import { IUsersTokenRepository } from '../repositories/IUsersTokenRepository'
-import { IMailProvider } from '../providers/mailProvider/IMailProvider'
+import { env } from '../../env'
+import { IUsersRepository } from '../../repositories/IUsersRepository'
+import { IUsersTokenRepository } from '../../repositories/IUsersTokenRepository'
+import { IMailProvider } from '../../providers/mailProvider/IMailProvider'
 
 export class SendForgotPasswordUseCase {
   constructor(

@@ -1,11 +1,11 @@
 import { compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { User } from '@prisma/client'
-import { env } from '../env'
-import { AppError } from '../erros/AppError'
+import { env } from '../../env'
+import { AppError } from '../../erros/AppError'
 import dayjs from 'dayjs'
-import { IUsersRepository } from '../repositories/IUsersRepository'
-import { IUsersTokenRepository } from '../repositories/IUsersTokenRepository'
+import { IUsersRepository } from '../../repositories/IUsersRepository'
+import { IUsersTokenRepository } from '../../repositories/IUsersTokenRepository'
 
 interface AuthenticateUseCaseRequest {
   email: string

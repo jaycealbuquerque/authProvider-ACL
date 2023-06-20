@@ -1,6 +1,6 @@
 import { Roles } from '@prisma/client'
-import { AppError } from '../erros/AppError'
-import { IRolesRepository } from '../repositories/IRolesRepository'
+import { AppError } from '../../erros/AppError'
+import { IRolesRepository } from '../../repositories/IRolesRepository'
 
 interface RoleRequest {
   name: string

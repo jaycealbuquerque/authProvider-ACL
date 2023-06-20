@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
-import { AppError } from '../erros/AppError'
+import { AppError } from '../../erros/AppError'
 import { hash } from 'bcryptjs'
 import { User } from '@prisma/client'
-import { IUsersTokenRepository } from '../repositories/IUsersTokenRepository'
-import { IUsersRepository } from '../repositories/IUsersRepository'
+import { IUsersTokenRepository } from '../../repositories/IUsersTokenRepository'
+import { IUsersRepository } from '../../repositories/IUsersRepository'
 
 interface IRequest {
   token: string

@@ -1,6 +1,6 @@
 import { Permissions } from '@prisma/client'
-import { AppError } from '../erros/AppError'
-import { IPermissionRepository } from '../repositories/IPermissionRepository'
+import { AppError } from '../../erros/AppError'
+import { IPermissionRepository } from '../../repositories/IPermissionRepository'
 
 interface PermisisonRequest {
   name: string
